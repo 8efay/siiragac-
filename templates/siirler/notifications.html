@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Bildirimler - Şiir Sitesi{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Bildirimler</h2>
+                    
+                    {% if notifications %}
+                        <div class="list-group">
+                            {% for notification in notifications %}
+                                <div class="list-group-item">
+                                    <div class="d-flex align-items-center">
+                                        {% if notification.sender.userprofile.avatar %}
+                                            <img src="{{ notification.sender.userprofile.avatar.url }}" alt="Avatar" class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                        {% else %}
+                                            <i class="fas fa-user-circle fa-2x me-3"></i>
+                                        {% endif %}
+                                        <div class="flex-grow-1">
+                                            <p class="mb-1">
+                                                <a href="{% url 'user_profile' username=notification.sender.username %}" class="text-decoration-none">
+                                                    {{ notification.sender.username }}
+                                                </a>
+                                                {% if notification.notification_type == 'like' %}
+                                                    şiirinizi beğendi
+                                                {% elif notification.notification_type == 'comment' %}
+                                                    şiirinize yorum yaptı
+                                                {% elif notification.notification_type == 'follow' %}
+                                                    sizi takip etmeye başladı
+                                                {% endif %}
+                                            </p>
+                                            <small class="text-muted">{{ notification.created_at|date:"d.m.Y H:i" }}</small>
+                                        </div>
+                                        {% if notification.siir %}
+                                            <a href="{% url 'siir_detay' notification.siir.id %}" class="btn btn-sm btn-outline-primary ms-3">
+                                                <i class="fas fa-eye"></i> Görüntüle
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            Henüz bildiriminiz bulunmamaktadır.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

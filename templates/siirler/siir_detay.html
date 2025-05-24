@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ siir.baslik }} - Şiir Sitesi{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">{{ siir.baslik }}</h2>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        Yazar: <a href="{% url 'user_profile' username=siir.yazar.username %}" class="text-decoration-none text-muted">{{ siir.yazar.username }}</a> - Tarih: {{ siir.olusturma_tarihi|date:"d.m.Y H:i" }}
+                    </h6>
+                    <hr>
+                    <p class="card-text" style="white-space: pre-wrap;">{{ siir.icerik }}</p>
+
+                    {% if siir.muzik_dosyasi %}
+                        <h6 class="mt-4">Fon Müzik:</h6>
+                        <audio controls class="mt-2 w-100">
+                            <source src="{{ siir.muzik_dosyasi.url }}" type="audio/mpeg">
+                            Tarayıcınız audio elementini desteklemiyor.
+                        </audio>
+                    {% endif %}
+
+                    <div class="mt-4">
+                         <a href="{% url 'kategori_detay' siir.kategori.id %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-tag"></i> {{ siir.kategori.isim }}
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger like-button{% if user in siir.likes.all %} liked{% endif %}" data-siir-id="{{ siir.id }}">
+                            <i class="{% if user in siir.likes.all %}fas{% else %}far{% endif %} fa-heart"></i>
+                            <span class="likes-count">{{ siir.likes.count }}</span>
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary save-button{% if user in siir.saved_by.all %} saved{% endif %}" data-siir-id="{{ siir.id }}">
+                            <i class="{% if user in siir.saved_by.all %}fas{% else %}far{% endif %} fa-bookmark"></i>
+                            <span class="saved-count">{{ siir.saved_by.count }}</span>
+                        </button>
+                        {% if user == siir.yazar %}
+                            <a href="{% url 'siir_duzenle' siir.id %}" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i> Düzenle</a>
+                            <a href="{% url 'siir_sil_onay' siir.id %}" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Sil</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+             <div class="mt-3">
+                 <a href="{% url 'anasayfa' %}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Anasayfaya Dön</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const siirId = this.dataset.siirId;
+            const url = `/siir/${siirId}/like/`;
+            const likesCountSpan = this.querySelector('.likes-count');
+            const icon = this.querySelector('i');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                likesCountSpan.textContent = data.likes_count;
+                if (data.liked) {
+                    icon.classList.replace('far', 'fas');
+                } else {
+                    icon.classList.replace('fas', 'far');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    document.querySelectorAll('.save-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const siirId = this.dataset.siirId;
+            const url = `/siir/${siirId}/save/`;
+            const savedCountSpan = this.querySelector('.saved-count');
+            const icon = this.querySelector('i');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                savedCountSpan.textContent = data.saved_count;
+                if (data.saved) {
+                    icon.classList.replace('far', 'fas');
+                } else {
+                    icon.classList.replace('fas', 'far');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.like-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const siirId = this.dataset.siirId;
+            const url = `/siir/${siirId}/like/`;
+            const likesCountSpan = this.querySelector('.likes-count');
+            const icon = this.querySelector('i');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                likesCountSpan.textContent = data.likes_count;
+                if (data.liked) {
+                    icon.classList.replace('far', 'fas');
+                } else {
+                    icon.classList.replace('fas', 'far');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+    document.querySelectorAll('.save-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const siirId = this.dataset.siirId;
+            const url = `/siir/${siirId}/save/`;
+            const savedCountSpan = this.querySelector('.saved-count');
+            const icon = this.querySelector('i');
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                savedCountSpan.textContent = data.saved_count;
+                if (data.saved) {
+                    icon.classList.replace('far', 'fas');
+                } else {
+                    icon.classList.replace('fas', 'far');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+{% endblock %} 

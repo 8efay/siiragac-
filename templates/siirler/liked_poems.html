@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Beğenilen Şiirler - Şiir Sitesi{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h2 class="mb-4">Beğenilen Şiirler</h2>
+
+            {% if siirler %}
+                <div class="row">
+                    {% for siir in siirler %}
+                        <div class="col-md-12">
+                            <a href="{% url 'siir_detay' siir.id %}" class="card mb-4 text-decoration-none text-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ siir.baslik }}</h5>
+                                    <p class="card-text">{{ siir.icerik|truncatewords:30 }}</p>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    Henüz beğenilen şiir yok.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

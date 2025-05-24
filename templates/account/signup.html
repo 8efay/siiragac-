@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Kayıt Ol - Şiir Sitesi{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <h3 class="mb-0">Kayıt Ol</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" name="username" class="form-control" id="id_username" placeholder="Kullanıcı Adı" required>
+                            <label for="id_username">Kullanıcı Adı</label>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="email" name="email" class="form-control" id="id_email" placeholder="E-posta" required>
+                            <label for="id_email">E-posta</label>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="password" name="password1" class="form-control" id="id_password1" placeholder="Şifre" required>
+                            <label for="id_password1">Şifre</label>
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="password" name="password2" class="form-control" id="id_password2" placeholder="Şifre (Tekrar)" required>
+                            <label for="id_password2">Şifre (Tekrar)</label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">Kayıt Ol</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        <a href="{% url 'account_login' %}" class="text-decoration-none">Zaten hesabınız var mı? Giriş yapın!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.form-control:focus {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+}
+.btn-success {
+    background: linear-gradient(45deg, #198754, #157347);
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-success:hover {
+    background: linear-gradient(45deg, #157347, #146c43);
+    transform: translateY(-2px);
+}
+.card-header {
+    background: linear-gradient(45deg, #198754, #157347) !important;
+}
+</style>
+{% endblock %} 

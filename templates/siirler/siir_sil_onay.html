@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Şiir Silme Onayı - Şiir Sitesi{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <h3 class="mb-0">Şiir Silme Onayı</h3>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <p class="mb-4"><b>"{{ siir.baslik }}"</b> başlıklı şiiri silmek istediğinizden emin misiniz?</p>
+                    <form method="post" action="{% url 'siir_sil' siir.id %}" class="d-inline-block me-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                    </form>
+                    <a href="{% url 'anasayfa' %}" class="btn btn-secondary">Hayır, İptal Et</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.btn-danger {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-danger:hover {
+    background: linear-gradient(45deg, #c82333, #bd2130);
+    transform: translateY(-2px);
+}
+.card-header {
+    background: linear-gradient(45deg, #dc3545, #c82333) !important;
+}
+
+.btn-secondary {
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+     transform: translateY(-2px);
+}
+</style>
+{% endblock %} 
