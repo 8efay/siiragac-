@@ -13,12 +13,6 @@
             <a href="{% url 'user_profile' username=siir.yazar.username %}" class="text-decoration-none text-muted">{{ siir.yazar.username }}</a> - {{ siir.olusturma_tarihi|date:"d.m.Y" }}
         </h6>
         <p class="card-text" style="white-space: pre-wrap;">{{ siir.icerik|truncatewords_html:50 }}</p>
-        {% if siir.muzik_dosyasi %}
-        <audio controls class="mt-2">
-            <source src="{{ siir.muzik_dosyasi.url }}" type="audio/mpeg">
-            Tarayıcınız audio elementini desteklemiyor.
-        </audio>
-        {% endif %}
         <div class="mt-3">
             <button class="btn btn-sm btn-outline-danger like-button{% if user in siir.likes.all %} liked{% endif %}" data-siir-id="{{ siir.id }}" onclick="event.stopPropagation();">
                 <i class="{% if user in siir.likes.all %}fas{% else %}far{% endif %} fa-heart"></i> <span class="likes-count">{{ siir.likes.count }}</span>
