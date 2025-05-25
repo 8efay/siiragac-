@@ -33,6 +33,7 @@ django-cleanup==8.1.0
 django-crispy-forms==2.1
 django-js-asset==2.2.0
 dnspython==2.4.2
+dj-database-url
 email-validator==2.0.0.post2
 executing==2.0.1
 fastjsonschema==2.20.0
@@ -128,6 +129,7 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 python-json-logger==2.0.7
 python3-openid==3.2.0
+psycopg2-binary
 pytweening==1.2.0
 pytz==2024.1
 pywhatkit==5.4
